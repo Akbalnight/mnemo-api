@@ -1,0 +1,11 @@
+{
+  "title": "Test Schema",
+  "content": {
+    "property_int": 0,
+    "property_str": "string prop",
+    "property_arr": [
+      "val1",
+      "val2"
+    ]
+  }
+}
