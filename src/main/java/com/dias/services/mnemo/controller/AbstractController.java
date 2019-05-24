@@ -6,18 +6,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-public abstract class AbstractController {
+public interface AbstractController {
 
-    public ResponseEntity<Resource> downloadExcel(String resultFile, byte[] content) {
+    default ResponseEntity<Resource> downloadExcel(String resultFile, byte[] content) {
         MediaType mediaType = new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         return downloadContent(resultFile, content, mediaType);
     }
 
-    public ResponseEntity<Resource> downloadPdf(String resultFile, byte[] content) {
+    default ResponseEntity<Resource> downloadPdf(String resultFile, byte[] content) {
         return downloadContent(resultFile, content, MediaType.APPLICATION_PDF);
     }
 
-    public ResponseEntity<Resource> downloadContent(String resultFile, byte[] content, MediaType mediaType) {
+    default ResponseEntity<Resource> downloadContent(String resultFile, byte[] content, MediaType mediaType) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("charset", "utf-8");
         headers.setContentType(mediaType);

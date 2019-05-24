@@ -17,16 +17,16 @@ public class ServiceExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ObjectNotFoundException.class})
     @ResponseBody
     protected ResponseEntity<Map<String, Object>> handleNotFoundException(HttpServletRequest req, Throwable ex) {
-        return handleException(req, ex, HttpStatus.NOT_FOUND);
+        return handleException(ex, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({SchemasException.class})
     @ResponseBody
     protected ResponseEntity<Map<String, Object>> handleControllerException(HttpServletRequest req, Throwable ex) {
-        return handleException(req, ex, ((SchemasException)ex).getStatus());
+        return handleException(ex, ((SchemasException)ex).getStatus());
     }
 
-    private ResponseEntity<Map<String, Object>> handleException(HttpServletRequest req, Throwable ex, HttpStatus status) {
+    private ResponseEntity<Map<String, Object>> handleException(Throwable ex, HttpStatus status) {
         Map<String, Object> errorAttributes = new LinkedHashMap<>();
         errorAttributes.put("severity", "Error");
         errorAttributes.put("errorMessage", ex.getMessage());

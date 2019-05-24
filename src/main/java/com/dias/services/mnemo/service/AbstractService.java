@@ -14,7 +14,7 @@ public abstract class AbstractService<T extends AbstractModel> {
      * returns model
      * throws {@link ObjectNotFoundException} if not found
      */
-    public T getById(Long id) throws ObjectNotFoundException {
+    public T getById(Long id) {
         return Optional.ofNullable(getRepository().getById(id))
                 .orElseThrow(() -> new ObjectNotFoundException(id));
     }
@@ -23,12 +23,12 @@ public abstract class AbstractService<T extends AbstractModel> {
         getRepository().create(model);
     }
 
-    public int delete(Long id) throws ObjectNotFoundException {
+    public int delete(Long id) {
         checkObjectExists(id);
         return getRepository().delete(id);
     }
 
-    private void checkObjectExists(Long id) throws ObjectNotFoundException {
+    private void checkObjectExists(Long id) {
         if (getById(id) == null) {
             throw new ObjectNotFoundException(id);
         }

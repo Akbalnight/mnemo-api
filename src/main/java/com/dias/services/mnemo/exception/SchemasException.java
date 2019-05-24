@@ -4,14 +4,10 @@ import org.springframework.http.HttpStatus;
 
 public class SchemasException extends RuntimeException {
 
-    private final Object[] args;
-    private HttpStatus status;
+    private final String[] args;
+    private final HttpStatus status;
 
-    public SchemasException(String message, Object ...args) {
-        this(message, HttpStatus.INTERNAL_SERVER_ERROR, args);
-    }
-
-    public SchemasException(String message, HttpStatus status, Object ...args) {
+    public SchemasException(String message, HttpStatus status, String ...args) {
         super(message);
         this.args = args;
         this.status = status;

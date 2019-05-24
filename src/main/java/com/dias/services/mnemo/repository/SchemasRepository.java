@@ -1,6 +1,8 @@
 package com.dias.services.mnemo.repository;
 
 import com.dias.services.mnemo.model.Schema;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -16,19 +18,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Repository
 public class SchemasRepository extends AbstractRepository<Schema> {
-
-    private static final String INIT_SCRIPT = "/db/schema.sql";
-
-    private static Logger LOG = Logger.getLogger(SchemasRepository.class.getName());
-
-    @Autowired
-    public SchemasRepository(NamedParameterJdbcTemplate template) {
-        super(template);
-    }
 
     static class SchemaRowMapper implements RowMapper {
 
@@ -43,8 +35,14 @@ public class SchemasRepository extends AbstractRepository<Schema> {
         }
     }
 
+    private static final String INIT_SCRIPT = "/db/schema.sql";
     private static final RowMapper<Schema> ROW_MAPPER = new SchemaRowMapper();
+    private static final Logger LOG = LoggerFactory.getLogger(SchemasRepository.class);
 
+    @Autowired
+    public SchemasRepository(NamedParameterJdbcTemplate template) {
+        super(template);
+    }
 
     @PostConstruct
     public void init() {
@@ -58,7 +56,7 @@ public class SchemasRepository extends AbstractRepository<Schema> {
         try {
             executeSqlFromFile(getClass(), template, INIT_SCRIPT);
         } catch (Exception e) {
-            LOG.severe("Ошибка инициализации модуля");
+            LOG.error("Ошибка инициализации модуля", e);
         }
     }
 
@@ -78,7 +76,8 @@ public class SchemasRepository extends AbstractRepository<Schema> {
         for (String qry: queries) {
             try {
                 template.getJdbcOperations().execute(qry);
-            } catch (Exception ignore) {
+            } catch (Exception e) {
+                LOG.error("Ошибка [{}] выполнения запроса [{}]", e.getMessage(), qry);
             }
         }
 

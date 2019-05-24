@@ -1,7 +1,6 @@
 package com.dias.services.mnemo.service;
 
 import com.dias.services.mnemo.dto.SchemeDTO;
-import com.dias.services.mnemo.exception.ObjectNotFoundException;
 import com.dias.services.mnemo.model.Schema;
 import com.dias.services.mnemo.repository.SchemasRepository;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,6 +9,8 @@ import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +18,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
 public class SchemasService extends AbstractService<Schema> {
 
-    private static Logger LOG = Logger.getLogger(SchemasService.class.getName());
-
+    private static final Logger LOG = LoggerFactory.getLogger(SchemasService.class);
     private final SchemasRepository schemasRepository;
-
     private final ObjectMapper objectMapper;
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -40,7 +38,8 @@ public class SchemasService extends AbstractService<Schema> {
                 if (source != null) {
                     return objectMapper.readTree(source);
                 }
-            } catch (IOException ignore) {
+            } catch (IOException e) {
+                LOG.error("Error while model mapper setup", e);
             }
             return null;
         };
@@ -51,7 +50,8 @@ public class SchemasService extends AbstractService<Schema> {
                 if (source != null) {
                     return objectMapper.writeValueAsString(source);
                 }
-            } catch (IOException ignore) {
+            } catch (IOException e) {
+                LOG.error("Error while model mapper setup", e);
             }
             return null;
         };
@@ -74,7 +74,7 @@ public class SchemasService extends AbstractService<Schema> {
 
     }
 
-    public SchemeDTO getSchema(Long id) throws ObjectNotFoundException {
+    public SchemeDTO getSchema(Long id) {
         Schema schema = getById(id);
         return convertToDTO(schema);
     }
@@ -91,7 +91,7 @@ public class SchemasService extends AbstractService<Schema> {
         return schemasRepository;
     }
 
-    public void merge(SchemeDTO originalSchemeDTO, SchemeDTO schemeDTO) throws Exception {
+    public void merge(SchemeDTO originalSchemeDTO, SchemeDTO schemeDTO) {
         Optional.ofNullable(schemeDTO).ifPresent ((SchemeDTO updates) -> {
             Optional.ofNullable(updates.getTitle()).ifPresent(originalSchemeDTO::setTitle);
             Optional.ofNullable(updates.getContent()).ifPresent(originalSchemeDTO::setContent);

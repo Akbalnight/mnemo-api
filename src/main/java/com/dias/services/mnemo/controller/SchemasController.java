@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@Api(tags = "REST API модуля мнемосхем", description = "Контроллер для работы с мнемосхемами")
-public class SchemasController extends AbstractController {
+@Api(tags = "REST API модуля мнемосхем")
+public class SchemasController implements AbstractController {
 
     private final SchemasService schemasService;
 
@@ -31,7 +31,7 @@ public class SchemasController extends AbstractController {
 
     @ApiOperation(value = "Получение схемы по id")
     @GetMapping(value = "/schemas/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public SchemeDTO getById(@PathVariable Long id) throws Exception {
+    public SchemeDTO getById(@PathVariable Long id) {
         return schemasService.getSchema(id);
     }
 
@@ -44,7 +44,7 @@ public class SchemasController extends AbstractController {
 
     @ApiOperation(value = "Обновление схемы")
     @PutMapping(value = "/schemas/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SchemeDTO> update(@PathVariable Long id, @RequestBody SchemeDTO schemeDTO) throws Exception {
+    public ResponseEntity<SchemeDTO> update(@PathVariable Long id, @RequestBody SchemeDTO schemeDTO) {
         SchemeDTO originalSchema = schemasService.getSchema(id);
         schemasService.merge(originalSchema, schemeDTO);
         return new ResponseEntity<>(originalSchema, HttpStatus.OK);
@@ -52,7 +52,7 @@ public class SchemasController extends AbstractController {
 
     @ApiOperation(value = "Удаление схемы")
     @DeleteMapping("/schemas/{id}")
-    public void delete(@PathVariable Long id) throws Exception {
+    public void delete(@PathVariable Long id) {
         schemasService.delete(id);
     }
 

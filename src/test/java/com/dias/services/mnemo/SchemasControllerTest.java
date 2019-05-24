@@ -1,5 +1,6 @@
 package com.dias.services.mnemo;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,13 +33,23 @@ public class SchemasControllerTest extends AbstractModuleTest {
     }
 
     @Test
-    public void order010createNewReport() throws Exception {
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/schemas")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Util.readResource("SchemasController/schema.json")))
-                .andExpect(status().isCreated()).andReturn();
-        Map resultMap = new JacksonJsonParser().parseMap(result.getResponse().getContentAsString());
-        createdSchemaId = (Integer) resultMap.get("id");
+    public void order010createNewReport() {
+        MvcResult result = null;
+        try {
+            result = mockMvc.perform(MockMvcRequestBuilders.post("/schemas")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(Util.readResource("SchemasController/schema.json")))
+                    .andExpect(status().isCreated()).andReturn();
+        } catch (Exception e) {
+            Assert.fail("Error while schemas getting");
+        }
+        JsonNode resultMap = null;
+        try {
+            resultMap = objectMapper.readTree(result.getResponse().getContentAsString());
+        } catch (IOException e) {
+            Assert.fail("Error while extracting response content");
+        }
+        createdSchemaId = resultMap.get("id").asInt();
         Assert.assertNotNull(createdSchemaId);
     }
 
