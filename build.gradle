@@ -4,7 +4,7 @@ buildscript {
 
 		appVersion = "0.1."
 		buildNumber = (System.getenv("BUILD_NUMBER")?.toString()?.toInteger() ?: 0)
-      	appName = 'catalogue.jar'
+      	appName = 'mnemo.jar'
 	}
 	repositories {
 		maven { url "https://plugins.gradle.org/m2/" }
