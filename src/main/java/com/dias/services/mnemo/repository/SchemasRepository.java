@@ -101,7 +101,7 @@ public class SchemasRepository extends AbstractRepository<Schema> {
                 "created_by," +
                 "content" +
                 ") values (" +
-                "nextval('schemas_id_seq')," +
+                "nextval('mnemo_schemas_id_seq')," +
                 ":title," +
                 ":createdBy," +
                 ":content)";
