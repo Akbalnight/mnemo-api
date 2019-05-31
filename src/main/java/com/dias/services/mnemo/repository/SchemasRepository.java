@@ -85,7 +85,7 @@ public class SchemasRepository extends AbstractRepository<Schema> {
 
     @Override
     public String getTableName() {
-        return "schemas";
+        return "mnemo_schemas";
     }
 
     @Override
@@ -95,7 +95,7 @@ public class SchemasRepository extends AbstractRepository<Schema> {
 
     @Override
     protected String getInsertSql() {
-        return "insert into schemas (" +
+        return "insert into mnemo_schemas (" +
                 "id," +
                 "title," +
                 "created_by," +
@@ -109,7 +109,7 @@ public class SchemasRepository extends AbstractRepository<Schema> {
 
     @Override
     protected String getUpdateSql() {
-        return "update schemas set " +
+        return "update mnemo_schemas set " +
                 "title=:title, " +
                 "created_by=:createdBy, " +
                 "content=:content " +
