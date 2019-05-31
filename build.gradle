@@ -4,6 +4,7 @@ buildscript {
 
 		appVersion = "0.1."
 		buildNumber = (System.getenv("BUILD_NUMBER")?.toString()?.toInteger() ?: 0)
+      	appName = 'catalogue.jar'
 	}
 	repositories {
 		maven { url "https://plugins.gradle.org/m2/" }
@@ -35,13 +36,13 @@ configurations {
 	providedRuntime
 }
 
+bootJar { archiveName = appName }
+
 task bootJarCustom (type: Copy, dependsOn:bootJar){
     from "build/libs"
     into "./build"
-    include (project.name + "-" + project.version + ".jar")
-    rename (project.name + "-" + project.version + ".jar", project.name + ".jar")
+    include (appName)
 }
-
 configure(bootJarCustom) {
     group = BasePlugin.BUILD_GROUP
     description = 'Assembles bootJar task and copy wars to build directory of root project'
