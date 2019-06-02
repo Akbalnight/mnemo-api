@@ -42,7 +42,7 @@ public abstract class AbstractModuleTest {
                 protected String getInsertSql() {
                     String insertSql = super.getInsertSql();
                     //для работы в h2 базе нужно переделать генерацию id
-                    return insertSql.replace("nextval('schemas_id_seq')","schemas_id_seq.NEXTVAL");
+                    return insertSql.replace("nextval('public.mnemo_schemas_id_seq')","mnemo_schemas_id_seq.NEXTVAL");
                 }
             };
         }

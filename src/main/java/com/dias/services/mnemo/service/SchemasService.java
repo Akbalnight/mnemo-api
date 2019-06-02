@@ -94,6 +94,7 @@ public class SchemasService extends AbstractService<Schema> {
     public void merge(SchemeDTO originalSchemeDTO, SchemeDTO schemeDTO) {
         Optional.ofNullable(schemeDTO).ifPresent ((SchemeDTO updates) -> {
             Optional.ofNullable(updates.getTitle()).ifPresent(originalSchemeDTO::setTitle);
+            Optional.ofNullable(updates.getSchemaType()).ifPresent(originalSchemeDTO::setSchemaType);
             Optional.ofNullable(updates.getContent()).ifPresent(originalSchemeDTO::setContent);
         });
         Schema model = convertToBO(originalSchemeDTO);

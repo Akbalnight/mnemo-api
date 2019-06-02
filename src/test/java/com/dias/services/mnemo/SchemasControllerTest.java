@@ -33,7 +33,7 @@ public class SchemasControllerTest extends AbstractModuleTest {
     }
 
     @Test
-    public void order010createNewReport() {
+    public void order010createNewSchema() {
         MvcResult result = null;
         try {
             result = mockMvc.perform(MockMvcRequestBuilders.post("/schemas")
@@ -54,7 +54,19 @@ public class SchemasControllerTest extends AbstractModuleTest {
     }
 
     @Test
-    public void order020updateReport() throws Exception {
+    public void order011createNewSchemaWithSameName() {
+        try {
+            mockMvc.perform(MockMvcRequestBuilders.post("/schemas")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(Util.readResource("SchemasController/schema.json")))
+                    .andExpect(status().isBadRequest()).andReturn();
+        } catch (Exception e) {
+            Assert.fail("Error while schemas getting");
+        }
+    }    
+
+    @Test
+    public void order020updateSchema() throws Exception {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/schemas/" + createdSchemaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Util.readResource("SchemasController/updateSchema.json")))
@@ -76,7 +88,7 @@ public class SchemasControllerTest extends AbstractModuleTest {
     }
 
     @Test
-    public void order060deleteReport() throws Exception {
+    public void order060deleteSchema() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/schemas/" + createdSchemaId)
                 .contentType(MediaType.APPLICATION_JSON))

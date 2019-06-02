@@ -1,5 +1,6 @@
 {
   "title": "Test Schema",
+  "schemaType": "my type",
   "content": {
     "property_int": 0,
     "property_str": "string prop",

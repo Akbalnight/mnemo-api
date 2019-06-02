@@ -29,6 +29,7 @@ public class SchemasRepository extends AbstractRepository<Schema> {
             Schema schema = new Schema();
             schema.setId(rs.getLong("id"));
             schema.setTitle(rs.getString("title"));
+            schema.setSchemaType(rs.getString("schema_type"));
             schema.setContent(rs.getString("content"));
             schema.setCreatedBy(rs.getString("created_by"));
             return schema;
@@ -98,11 +99,13 @@ public class SchemasRepository extends AbstractRepository<Schema> {
         return "insert into public.mnemo_schemas (" +
                 "id," +
                 "title," +
+                "schema_type," +
                 "created_by," +
                 "content" +
                 ") values (" +
                 "nextval('public.mnemo_schemas_id_seq')," +
                 ":title," +
+                ":schemaType," +
                 ":createdBy," +
                 ":content)";
     }
@@ -111,6 +114,7 @@ public class SchemasRepository extends AbstractRepository<Schema> {
     protected String getUpdateSql() {
         return "update public.mnemo_schemas set " +
                 "title=:title, " +
+                "schema_type=:schemaType, " +
                 "created_by=:createdBy, " +
                 "content=:content " +
                 "where id=:id";
