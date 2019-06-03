@@ -12,6 +12,7 @@ import lombok.*;
 @Builder
 public class Schema extends AbstractModel {
     private String title;
+    private String schemaType;
     private String createdBy;
     private String content;
 }

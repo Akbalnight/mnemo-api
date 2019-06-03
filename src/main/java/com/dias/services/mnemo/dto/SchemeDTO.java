@@ -9,6 +9,7 @@ import lombok.Setter;
 public class SchemeDTO {
     private Long id;
     private String title;
+    private String schemaType;
     private String createdBy;
     private JsonNode content;
 }
