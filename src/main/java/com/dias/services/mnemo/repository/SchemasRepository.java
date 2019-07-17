@@ -4,6 +4,7 @@ import com.dias.services.mnemo.model.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
@@ -21,6 +22,9 @@ import java.util.List;
 
 @Repository
 public class SchemasRepository extends AbstractRepository<Schema> {
+
+    @Value("${schemas.table:public.mnemo_schemas}")
+    private String schemasTable;
 
     static class SchemaRowMapper implements RowMapper {
 
@@ -72,6 +76,7 @@ public class SchemasRepository extends AbstractRepository<Schema> {
         InputStreamReader streamReader = new InputStreamReader(clazz.getResourceAsStream(path), "UTF-8");
         LineNumberReader reader = new LineNumberReader(streamReader);
         String query = ScriptUtils.readScript(reader, "--", ";");
+        query = query.replaceAll("\\{schemas.table\\}", schemasTable);
         List<String> queries = new ArrayList<>();
         ScriptUtils.splitSqlScript(query, ";", queries);
         for (String qry: queries) {
@@ -86,7 +91,7 @@ public class SchemasRepository extends AbstractRepository<Schema> {
 
     @Override
     public String getTableName() {
-        return "public.mnemo_schemas";
+        return schemasTable;
     }
 
     @Override
@@ -96,7 +101,7 @@ public class SchemasRepository extends AbstractRepository<Schema> {
 
     @Override
     protected String getInsertSql() {
-        return "insert into public.mnemo_schemas (" +
+        return "insert into " + schemasTable + " (" +
                 "id," +
                 "title," +
                 "schema_type," +
@@ -112,7 +117,7 @@ public class SchemasRepository extends AbstractRepository<Schema> {
 
     @Override
     protected String getUpdateSql() {
-        return "update public.mnemo_schemas set " +
+        return "update " + schemasTable + " set " +
                 "title=:title, " +
                 "schema_type=:schemaType, " +
                 "created_by=:createdBy, " +
