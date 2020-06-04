@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.4.RELEASE'
+		springBootVersion = '2.1.2.RELEASE'
 
 		appVersion = "0.1."
 		buildNumber = (System.getenv("BUILD_NUMBER")?.toString()?.toInteger() ?: 0)
@@ -61,7 +61,7 @@ dependencies {
 	compile ('org.springframework.boot:spring-boot-starter-actuator')
 
 	compile ('org.projectlombok:lombok')
-	compile ('org.apache.tomcat:tomcat-jdbc')
+    compile ('org.apache.tomcat:tomcat-jdbc')
 	compile ('org.postgresql:postgresql:42.2.5')
 	compile ('org.hibernate:hibernate-core:5.3.7.Final')
 
